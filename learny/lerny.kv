@@ -1,0 +1,29 @@
+#:kivy 1.8.0
+
+
+<InputScreen>:
+    inputtext: inputtext
+    langspinner: langspinner
+    titlelabel: titlelabel
+    cols: 1
+    rows: 2
+
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            markup: True
+            id: titlelabel
+            text: "Geben Sie hier den Text ein:"
+            color: 0,1,0,1
+        TextInput:
+            id: inputtext
+            text: "Input"
+            color: 0,1,0,1
+            font_size: 40
+        Spinner:
+            id: langspinner
+            text: 'Sprache auswählen:'
+            values: 'Sprache: Deutsch', 'Sprache: Englisch'
+        Button:
+            text:"Los!"
+            on_press: root.btn() # <- Add this
