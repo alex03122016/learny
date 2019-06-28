@@ -44,7 +44,7 @@ def lookupDEMorphy(v):
 			for iVerbs in important_verb_list:
 				#print(important_verb_list)
 				if important_verb[0] == iVerbs[0] and word[1].mode == iVerbs[1][0]['MODE']:
-					print(f'{Tense}1: already in important verb list: ' + iVerbs[0])
+					print('{Tense}1: already in important verb list: ' + iVerbs[0])
 					alreadyin = True
 				elif alreadyin == False and iVerbs[0] == important_verb_list[-1][0]:
 					print('					new word saved: '+ str(important_verb))
@@ -54,12 +54,12 @@ def lookupDEMorphy(v):
 		return important_verb_list, printString, found
 
 
-	shelfFile = shelve.open(os.path.join(
+	"""shelfFile = shelve.open(os.path.join(
 								os.path.expanduser('~'),
 								'python-project' ,
 								'kivy-test',
 								'learny',
-								'dictdatakivy'))
+								'dictdatakivy'))"""
 	#uncomment to create new shelf file database
 	"""important_verb_list = [
 								['aufbaue',
@@ -78,6 +78,7 @@ def lookupDEMorphy(v):
 								]
 							]"""
 	print('get important verb list')
+	global important_verb_list
 	important_verb_list = shelfFile['important_verb_list']
 	important_verb = []
 	printString = {}
@@ -131,9 +132,9 @@ def lookupDEMorphy(v):
 		#DEMorphy look up
 		analyzer = Analyzer(char_subs_allowed=True)
 		DEMorphy = analyzer.iter_lexicon_formatted(prefix=lookupTerm)
-		print(f"iVfound: {iVfound}")
+		#print(f"iVfound: {iVfound}")
 		if iVfound <= 1:
-			print('looking up DEMorphy with:' + lookupTerm)
+			print('looking up DEMorphy with:' + lookupTerm + "\n"*5)
 
 			for word in DEMorphy:
 				if word == '':
@@ -154,11 +155,10 @@ def lookupDEMorphy(v):
 																		important_verb_list=important_verb_list)
 
 
-	print('one moment bevore putting new words into shelffILE')
-	#print('final important verb list' + str(important_verb_list))
-	shelfFile['important_verb_list'] = important_verb_list
-	shelfFile.close()
-	print('shelfFile closed')
+	#print('one moment bevore putting new words into shelffILE')
+	#shelfFile['important_verb_list'] = important_verb_list
+	#shelfFile.close()
+	#print('shelfFile closed')
 	return printString
 
 def flexTable(inputtext, langspinner):
@@ -175,7 +175,7 @@ def flexTable(inputtext, langspinner):
 	from hyphen import Hyphenator
 	import shelve
 
-	print('generate flexion table')
+	print('generate flexion table'+ "\n"*5)
 
 
 	# variables and lists used
@@ -189,7 +189,12 @@ def flexTable(inputtext, langspinner):
 	mix_list = []
 	de_DE = Hyphenator('de_DE')
 	global shelfFile
-
+	shelfFile = shelve.open(os.path.join(
+								os.path.expanduser('~'),
+								'python-project' ,
+								'kivy-test',
+								'learny',
+								'dictdatakivy'))
 	# load language from kivy
 	lang = ""
 	if langspinner == "Sprache: Deutsch":
@@ -197,7 +202,7 @@ def flexTable(inputtext, langspinner):
 	elif langspinner == "Sprache: Englisch":
 		lang = "en_core_web_sm"
 	else:
-		print("didnt choose language")
+		print("didnt choose language"+ "\n"*5)
 	nlp = spacy.load(lang)
 
 	# load text from kivy to spacy
@@ -215,11 +220,11 @@ def flexTable(inputtext, langspinner):
 
 	#look up 1person present tense and past tense of a word in the given text
 	for v in verb_list[0:-1]:
-		print('beginning with look up of this word: ' + str(v))
+		print('beginning with look up of this word: ' + str(v)+ "\n"*5)
 		vMorphy = lookupDEMorphy(v)
 		new_list.append(list(vMorphy.values()))
-		print('new_list result from look up' + str(new_list))
-		print('ready with look up\n\n\')
+		print('new_list result from look up' + str(new_list)+ "\n"*5)
+		#print('ready with look up\n\n\')
 
 	random.shuffle(new_list)
 	for elements in new_list:
@@ -258,6 +263,11 @@ def flexTable(inputtext, langspinner):
 	#
 	#save the result
 	doc.save(os.path.join(os.path.expanduser('~'), 'python-project', "kivy-test", "learny", 'flexTable'+"fileTitle.docx"))
+	print('one moment bevore putting new words into shelffILE'+ "\n"*5)
+	shelfFile['important_verb_list'] = important_verb_list
+	shelfFile.close()
+	print('shelfFile closed')
+
 	return
 
 text="""Firmen und Forschungseinrichtungen, die Algorithmen
