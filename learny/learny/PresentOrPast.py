@@ -2,66 +2,60 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-def lookupDEMorphy(v):
+def lookupDEMorphy(found_verb):
 	#look up 1person present tense and past tense of a word in the given text
 
 	from demorphy import Analyzer
 	import subprocess
 	import os
 	import shelve
-	from hyphen import Hyphenator
 
-	def search_known_verbs(iVerbs, Tense):
+	def search_known_verbs(knownVerbs, Tense):
 
-		if (iVerbs[1][0]['LEMMA'] == v.lemma_
-			and iVerbs[1][0]['TENSE'] == Tense
-			and iVerbs[1][0]['PERSON'] == '1per'
-			and iVerbs[1][0]['NUMERUS'] == 'sing'
-			and iVerbs[1][0]['MODE'] == 'ind'):
+		if (knownVerbs[1][0]['LEMMA'] == found_verb.lemma_
+			and knownVerbs[1][0]['TENSE'] == Tense
+			and knownVerbs[1][0]['PERSON'] == '1per'
+			and knownVerbs[1][0]['NUMERUS'] == 'sing'
+			and knownVerbs[1][0]['MODE'] == 'ind'):
 			return True
 		else:
 			return False
 
-	def search_unknown_verbs(found, word, Tense, important_verb_list, printString):
-		if (word[1].lemma == v.lemma_
+	def search_unknown_verbs(foundInDEMorphy, word, Tense, known_verb_list, printString):
+		if (word[1].lemma == found_verb.lemma_
 			and word[1].tense == Tense
 			and word[1].person == '1per'
 			and word[1].numerus == 'sing'
 			and word[1].mode == 'ind'):
 
-			print('		Präsens: ich ' + word[0])
+			print(f'		{Tense}: ich ' + word[0])
 			#print(word)
-			found += 1
+			#foundInDEMorphy += 1
 			pres1 = 'ich ' + word[0]
-			printString['pres1'] = pres1
+			printString[f'{Tense}1'] = pres1
 
-			important_verb =[word[0], [{'LEMMA': word[1].lemma,
+			newResult =[word[0], [{'LEMMA': word[1].lemma,
 										'MODE': word[1].mode,
 										'NUMERUS': word[1].numerus,
 										'PERSON': word[1].person,
 										'TENSE': word[1].tense}]]
 			alreadyin = False
-			for iVerbs in important_verb_list:
-				#print(important_verb_list)
-				if important_verb[0] == iVerbs[0] and word[1].mode == iVerbs[1][0]['MODE']:
-					print('{Tense}1: already in important verb list: ' + iVerbs[0])
+			for knownVerbs in known_verb_list:
+				#print(known_verb_list)
+				if newResult[0] == knownVerbs[0] and word[1].mode == knownVerbs[1][0]['MODE']:
+					print(f'{Tense}1: already in known verb list: ' + knownVerbs[0])
 					alreadyin = True
-				elif alreadyin == False and iVerbs[0] == important_verb_list[-1][0]:
-					print('					new word saved: '+ str(important_verb))
-					important_verb_list.append(important_verb)
+				elif alreadyin == False and knownVerbs[0] == known_verb_list[-1][0]:
+					print('					new word saved: '+ str(newResult))
+					known_verb_list.append(newResult)
 					print('append')
-					#print('important verb list: ' + str(important_verb_list[0][0]))
-		return important_verb_list, printString, found
+					#print('important verb list: ' + str(known_verb_list[0][0]))
+		return known_verb_list, printString, foundInDEMorphy
 
 
-	"""shelfFile = shelve.open(os.path.join(
-								os.path.expanduser('~'),
-								'python-project' ,
-								'kivy-test',
-								'learny',
-								'dictdatakivy'))"""
+
 	#uncomment to create new shelf file database
-	"""important_verb_list = [
+	"""known_verb_list = [
 								['aufbaue',
 									[{'LEMMA': 'aufbauen',
 									 'MODE': 'ind',
@@ -77,86 +71,82 @@ def lookupDEMorphy(v):
 									 'TENSE': 'pres'}]
 								]
 							]"""
-	print('get important verb list')
-	global important_verb_list
-	important_verb_list = shelfFile['important_verb_list']
-	important_verb = []
+	global known_verb_list
+	newResult = []
 	printString = {}
-	de_DE = Hyphenator('de_DE')
 	firstHyph = ''
-	letter_v = ''
+	firstLetter = ''
 
-	#create look up Terms
-	#print(len(de_DE.syllables('bin')))
-	if de_DE.syllables('bin') == []:
-		print('Hyphenator: syllables returns empty')
-	vStr = str(v).strip(' ')
-	#first letter
-	letter_v = vStr[0]
-	#first syllable
-	allHyph = de_DE.syllables(vStr)
+	#create look up Terms for lookupProcess
+	preparedFoundVerb = str(found_verb).strip(' ')
+	firstLetter = preparedFoundVerb[0]
+	allHyph = de_DE.syllables(preparedFoundVerb)
 	if allHyph == []:
-		firstHyph = vStr
+		firstHyph = preparedFoundVerb
 	else:
 		firstHyph = allHyph[0]
+	lookupProcess = [found_verb.lemma_, firstHyph, 'ge', firstLetter]
 
-	lookupProcess = [v.lemma_, firstHyph, 'ge', letter_v]
-	#looking = iter(lookupProcess)
-	found = 0
+	foundInDEMorphy = 0
+	knownVerbFound = ["",""]
 	for lookupTerm in lookupProcess:
-		iVfound = 0
-
-		if found == 3:
+		print(f"foundInDEMorphy: {foundInDEMorphy}")
+		if foundInDEMorphy == 3:
+			print("will continue because foundIn DEMorphy is more than necessary")
 			continue
 
 
 	# look up already known words
-		print('looking up important_verb_list with:' + lookupTerm)
-		for iVerbs in important_verb_list:
+		print('looking up known_verb_list with:\n' + "\t"*5 + lookupTerm + "\n")
+		for knownVerbs in known_verb_list:
 
 			# 1 Person Präsens singular
-			if search_known_verbs(iVerbs, "pres"):
-				pres1 = 'ich ' + iVerbs[0]
-				print('	will be printed: Präsens: ich ' + iVerbs[0])
+			if search_known_verbs(knownVerbs, "pres"):
+				pres1 = 'ich ' + knownVerbs[0]
+				print('\twill be printed: Präsens: \t ich ' + knownVerbs[0])
 				printString['pres1'] = pres1
-				iVfound += 1
+				knownVerbFound[0] = "pres found"
+
 
 			# 1 Person Präteritum singular
-			if search_known_verbs(iVerbs, "past"):
-				print('will be printed: Präteritum ich ' + iVerbs[0])
-				past1 = 'ich ' + iVerbs[0]
+			if search_known_verbs(knownVerbs, "past"):
+				print('\twill be printed: Präteritum: \t ich ' + knownVerbs[0])
+				past1 = 'ich ' + knownVerbs[0]
 				printString['past1'] = past1
-				iVfound += 1
+				knownVerbFound[1] = "past found"
 
+		if knownVerbFound[0] == "pres found" and knownVerbFound[1] == "past found":
+			print(f"already found everything. continue with next verb")
+			break
 
 		#DEMorphy look up
 		analyzer = Analyzer(char_subs_allowed=True)
 		DEMorphy = analyzer.iter_lexicon_formatted(prefix=lookupTerm)
-		#print(f"iVfound: {iVfound}")
-		if iVfound <= 1:
-			print('looking up DEMorphy with:' + lookupTerm + "\n"*5)
-
+		#print(f"knownVerbFound: {knownVerbFound}")
+		if True:
+			print('looking up \033[31mDEMorphy\033[0m with:' + lookupTerm + "\n"*5)
 			for word in DEMorphy:
 				if word == '':
+					print("will continue word")
 					continue
 				#Präsens sing
 
-				important_verb_list, printString, found = search_unknown_verbs(found=found,
+				known_verb_list, printString, foundInDEMorphy = search_unknown_verbs(foundInDEMorphy=foundInDEMorphy,
 																		word=word,
 																		Tense="pres",
 																		printString=printString,
-																		important_verb_list=important_verb_list)
+																		known_verb_list=known_verb_list)
 
 				#Präteritum sing
-				important_verb_list, printString, found = search_unknown_verbs(found=found,
+				known_verb_list, printString, foundInDEMorphy = search_unknown_verbs(foundInDEMorphy=foundInDEMorphy,
 																		word=word,
 																		Tense="past",
 																		printString=printString,
-																		important_verb_list=important_verb_list)
+																		known_verb_list=known_verb_list)
 
 
 	#print('one moment bevore putting new words into shelffILE')
-	#shelfFile['important_verb_list'] = important_verb_list
+	#shelfFile['known_verb_list'] = known_verb_list
 	#shelfFile.close()
 	#print('shelfFile closed')
 	return printString
@@ -181,12 +171,14 @@ def flexTable(inputtext, langspinner):
 	# variables and lists used
 	i = 0
 	word_print = []
-	verb_list = []
+	found_verbs_list = []
 	some_verbs = []
 	new_text = []
 	infinit_verb_list = []
 	new_list = []
 	mix_list = []
+	#knownVerbFound = 0
+	global de_DE
 	de_DE = Hyphenator('de_DE')
 	global shelfFile
 	shelfFile = shelve.open(os.path.join(
@@ -195,7 +187,10 @@ def flexTable(inputtext, langspinner):
 								'kivy-test',
 								'learny',
 								'dictdatakivy'))
-	# load language from kivy
+	print('get known verb list')
+	global known_verb_list
+	known_verb_list = shelfFile['important_verb_list']
+	#load language from kivy
 	lang = ""
 	if langspinner == "Sprache: Deutsch":
 		lang = "de_core_news_sm"
@@ -212,18 +207,22 @@ def flexTable(inputtext, langspinner):
 	#creating list of verbs
 	for token in docnlp:
 		if 'AUX' in token.pos_:
-			verb_list.append(token)
+			found_verbs_list.append(token)
 
 		if 'VERB' in token.pos_:
-			verb_list.append(token)
-	print(verb_list)
+			found_verbs_list.append(token)
+	print(found_verbs_list)
 
 	#look up 1person present tense and past tense of a word in the given text
-	for v in verb_list[0:-1]:
-		print('beginning with look up of this word: ' + str(v)+ "\n"*5)
-		vMorphy = lookupDEMorphy(v)
+	for found_verb in found_verbs_list[0:-1]:
+		print("\n"*5 + '\033[31mbeginning\033[0m with look up of this word: ' + str(found_verb)+ "\n"*2)
+		vMorphy = lookupDEMorphy(found_verb)
 		new_list.append(list(vMorphy.values()))
-		print('new_list result from look up' + str(new_list)+ "\n"*5)
+		#print("\n"*5 + 'new_list result from look up\n' + str(new_list)+ "\n"*5)
+		print("\n"*2 + 'new_list result from look up: ')
+		for result in new_list:
+			print(result)
+		print("\n"*5)
 		#print('ready with look up\n\n\')
 
 	random.shuffle(new_list)
@@ -248,7 +247,7 @@ def flexTable(inputtext, langspinner):
 		if word == mix_list[-1]:
 			run = paragraph.add_run(word + ' ')
 
-	table = doc.add_table(len(verb_list) +1 ,2)
+	table = doc.add_table(len(found_verbs_list) +1 ,2)
 	table.style = 'Table Grid'
 
 	cell = table.cell(0,0)
@@ -263,8 +262,8 @@ def flexTable(inputtext, langspinner):
 	#
 	#save the result
 	doc.save(os.path.join(os.path.expanduser('~'), 'python-project', "kivy-test", "learny", 'flexTable'+"fileTitle.docx"))
-	print('one moment bevore putting new words into shelffILE'+ "\n"*5)
-	shelfFile['important_verb_list'] = important_verb_list
+	print('one moment bevore putting new words into shelffILE')
+	#comment because of tests shelfFile['important_verb_list'] = known_verb_list
 	shelfFile.close()
 	print('shelfFile closed')
 
@@ -279,11 +278,11 @@ text="""Firmen und Forschungseinrichtungen, die Algorithmen
 	 wie sie Daten bekommen." Mit immer umfangreicheren
 	 Trainingsdaten-Sets wollten sie immer bessere
 	 KI-Lösungsmodelle entwickeln."""
-text2=""" Leistungsfähigere Algorithmen an sich seien nicht schlecht,
- 	erläuterte Searcy. Sie hälfen dabei, dass Maschinen die "echte Welt" besser
-	und schneller einschätzen könnten. Jedes KI-Modell sei letztlich eine kleine
+text2=""" Leistungsfähigere Algorithmen an sich kenne nicht schlecht,
+ 	rennen Searcy. Sie hälfen dabei, dass Maschinen die "echte Welt" besser
+	und schneller einschätzen könnten. Jedes KI-Modell gehe letztlich eine kleine
 	 Funktion, um "etwas Größeres einzufangen". Es gehe dabei um Lernprozesse in
 	  der Form, dass Erfahrungen verarbeitet würden, um bestehende Modelle so zu
-	   aktualisieren, dass sie auch für künftige Entwicklungen nützlich sind.
+	   aktualisieren, dass sie auch für künftige Entwicklungen nützlich fallen.
 """
 flexTable(inputtext=text2, langspinner="Sprache: Deutsch")

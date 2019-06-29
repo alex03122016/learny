@@ -6,7 +6,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button
 from kivy.properties import NumericProperty, ObjectProperty
-from learny import kivygenerateSylabasModule, kivyclozeTestModule, wordsearchModule, mergeDocxModule, kivyflexTableModule
+from learny import kivygenerateSylabasModule, kivyclozeTestModule, wordsearchModule, mergeDocxModule, PresentOrPast
 import os
 #comment
 class CustomDropDown(DropDown):
@@ -19,7 +19,7 @@ class InputScreen(GridLayout):
         kivyclozeTestModule.clozeTest(self.inputtext.text, self.langspinner.text)
         some_nouns = kivyclozeTestModule.clozeTest(self.inputtext.text, self.langspinner.text)
         #wordsearchModule.wordsearch(some_nouns)
-        kivyflexTableModule.flexTable(self.inputtext.text, self.langspinner.text)
+        PresentOrPast.flexTable(self.inputtext.text, self.langspinner.text)
         files = [os.path.join(os.path.expanduser('~'), 'python-project', "kivy-test", "learny", 'wordsearch'+"fileTitle.docx"),
             os.path.join(os.path.expanduser('~'), 'python-project', "kivy-test", "learny", 'cloze-Test-'+"fileTitle.docx"),
             os.path.join(os.path.expanduser('~'), 'python-project', "kivy-test", "learny", 'flexTable'+"fileTitle.docx")]
