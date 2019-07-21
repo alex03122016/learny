@@ -6,7 +6,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button
 from kivy.properties import NumericProperty, ObjectProperty
-from learny import kivygenerateSylabasModule, kivyclozeTestModule, wordsearchModule, mergeDocxModule, PresentOrPast
+from learny import colorsyllables, clozetest, wordsearchModule, mergeDocxModule, PresentOrPast, specialwords
 import os
 #comment
 class CustomDropDown(DropDown):
@@ -14,16 +14,18 @@ class CustomDropDown(DropDown):
 
 class InputScreen(GridLayout):
     def btn(self):
-        print("inputtext:", self.inputtext.text, "langspinner:", self.langspinner.text)
-        kivygenerateSylabasModule.generateSylabas(self.inputtext.text)
-        kivyclozeTestModule.clozeTest(self.inputtext.text, self.langspinner.text)
-        some_nouns = kivyclozeTestModule.clozeTest(self.inputtext.text, self.langspinner.text)
-        #wordsearchModule.wordsearch(some_nouns)
-        PresentOrPast.flexTable(self.inputtext.text, self.langspinner.text)
-        files = [os.path.join(os.path.expanduser('~'), 'python-project', "kivy-test", "learny", 'wordsearch'+"fileTitle.docx"),
-            os.path.join(os.path.expanduser('~'), 'python-project', "kivy-test", "learny", 'cloze-Test-'+"fileTitle.docx"),
-            os.path.join(os.path.expanduser('~'), 'python-project', "kivy-test", "learny", 'flexTable'+"fileTitle.docx")]
-        mergeDocxModule.combine_word_documents(files)
+        print("input text:", self.inputtext.text, "language:", self.langspinner.text)
+        #colorsyllables.color_syllables(self.inputtext.text)
+        #clozetest.cloze_test(self.inputtext.text, self.langspinner.text)
+        #some_nouns = clozetest.cloze_test(self.inputtext.text, self.langspinner.text)
+        some_nouns = specialwords.nouns(self.inputtext.text, self.langspinner.text)
+        print('hellllllllllllllllllllllllooooooo', some_nouns)
+        wordsearchModule.wordsearch(some_nouns)
+        #PresentOrPast.present_or_past(self.inputtext.text, self.langspinner.text)
+        #files = [os.path.join(os.path.expanduser('~'), 'python-project', "kivy-test", "learny", 'wordsearch'+"fileTitle.docx"),
+        #    os.path.join(os.path.expanduser('~'), 'python-project', "kivy-test", "learny", 'cloze-Test-'+"fileTitle.docx"),
+        #    os.path.join(os.path.expanduser('~'), 'python-project', "kivy-test", "learny", 'present_or_past'+"fileTitle.docx")]
+        #mergeDocxModule.combine_word_documents(files)
 
 
         self.inputtext.text = ""

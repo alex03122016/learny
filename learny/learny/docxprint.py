@@ -2,6 +2,7 @@
 import docx 	#python-docx module
 from docx.shared import RGBColor
 from docx.shared import Pt
+import os
 
 def docx_print(printText="",
                 color=None,
@@ -14,8 +15,13 @@ def docx_print(printText="",
                 TableRow=0,
                 TableCol=0,
                 TableROWS=0,
-                TableCOLS=0, ):
+                TableCOLS=0,
+				save='' ):
   doc = Doc
+  if save != '':
+      save_path = os.path.join(os.path.expanduser('~'),'python-project' ,'kivy-test', 'learny', save + 'fileTitle.docx')
+      print("save")
+      return save_path
   if pageBreak == True:
     doc.add_page_break()
 
@@ -51,3 +57,57 @@ def docx_print(printText="",
       return paragraph
   if NewTable == True:
       return table
+
+def print_present_or_past(looked_up_verbs_list, found_verbs_list):
+	import random
+	import os
+
+	import docx
+	from docx.shared import RGBColor
+	from docx.shared import Pt
+
+	#looked_up_verbs_list = []
+	mix_list = []
+
+	random.shuffle(looked_up_verbs_list)
+	for elements in looked_up_verbs_list:
+		for word in elements:
+			if len(mix_list) == 26:
+				break
+			if word not in mix_list:
+				mix_list.append(word)
+
+
+	#print everythin to .docx file
+	doc = docx.Document()
+	paragraph = doc.add_paragraph()
+	run = paragraph.add_run('Aufgabe: Hier siehst du Verben aus dem Text.\n \n  Ordne Sie richtig zu! \n Sind sie im Präsens oder im Präteritum?')
+	font = run.font
+	font.size = Pt(18)
+	font.bold = True
+
+	paragraph = doc.add_paragraph('')
+	random.shuffle(mix_list)
+	for word in mix_list:
+		run = paragraph.add_run(word + ', ')
+		font = run.font
+		font.size = Pt(18)
+		if word == mix_list[-1]:
+			run = paragraph.add_run(word + ' ')
+
+	table = doc.add_table(13 +1 ,2)
+	table.style = 'Table Grid'
+
+	cell = table.cell(0,0)
+	cell.text = 'Präsens'
+	paragraph = cell.add_paragraph()
+	run = paragraph.add_run()
+	font = run.font
+	font.size = Pt(18)
+
+	cell = table.cell(0,1)
+	cell.text = 'Präteritum'
+	#
+	#save the result
+	doc.save(os.path.join(os.path.expanduser('~'), 'python-project', "kivy-test", "learny", __name__ +"fileTitle.docx"))
+	return

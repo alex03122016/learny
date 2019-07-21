@@ -1,20 +1,15 @@
 #! python3
 #
-#cloze test generator(all nouns): this program searches a given docx documents for nouns and substitutes them with ' _'
+#cloze test maker: this program searches a given text for nouns and substitutes them with ' _'
 #
-def clozeTest(inputtext, langspinner):
+def cloze_test(inputtext, language):
 	import random
-	import subprocess
 	import os
 	import spacy #code: pip install spacy
-	from spacy.lang.de.examples import sentences
 	import docx 	#python-docx module
-	from docx.shared import RGBColor
-	from docx.shared import Pt
-	from learny import docxprint
+	from learny import docxprint, languageload
 
 	# variables and lists used
-	save_path = os.path.join(os.path.expanduser('~'),'python-project' ,'kivy-test', 'learny', 'cloze-Test-' + 'fileTitle.docx')
 	i = 0
 	noun_list = [] # list of nouns that will be part of the cloze
 	some_nouns = [] #für Rätselwörter
@@ -29,25 +24,14 @@ def clozeTest(inputtext, langspinner):
 	}
 
 	doc = docx.Document()# initializing python-docx
-	print('-------------------GENERATE gloze test----------------------')
+	save_path = docxprint.docx_print(Doc= doc, save= 'clozeTest')
+
+	print('-------------------make gloze test----------------------')
 
 	skip = False # it has to be hereque!nearly went crazy to figure it out
 
-	# load language from kivy
-	lang = ""
-	if langspinner == "Sprache: Deutsch":
-		lang = "de_core_news_sm"
-	elif langspinner == "Sprache: Englisch":
-		lang = "en_core_web_sm"
-	else:
-		print("didnt choose language")
-	nlp = spacy.load(lang)
-
-	#load text from kivy
-	rawText = inputtext
-	docnlp = nlp(rawText) #load to spacy
-	text = rawText.split()
-	#docx_print = docxprint.docx_print(Doc=doc)
+	nlp = languageload.language_load(language)
+	docnlp = nlp(inputtext) #load to spacy
 
 	docxprint.docx_print(printText=Aufgabe["Kopfzeile"], Doc=doc)
 	docxprint.docx_print(printText=Aufgabe["1. Aufgabe"], Bold=True, Doc=doc)
@@ -59,7 +43,7 @@ def clozeTest(inputtext, langspinner):
 			noun_list.append(token)# complete list of nouns
 			skip = not skip #like that every second noun will be substituted
 			if skip == True:
-				some_nouns.append(token)# late for the solution box
+				some_nouns.append(str(token))# later for the solution box
 				substitute = [] # erases contend of substitute
 				for l in str(token):
 					substitute.append(' _') #substitutes nouns with _
@@ -74,10 +58,13 @@ def clozeTest(inputtext, langspinner):
 
 	docxprint.docx_print(printText=Aufgabe["Hinweise"], Bold=True, Doc=doc)
 	paragraph = docxprint.docx_print(Doc=doc)
+
 	random.shuffle(some_nouns)
 	for word in some_nouns:
 		docxprint.docx_print(printText=str(word) + ', ', Paragraph=paragraph, Doc=doc)
 
+	some_nouns = list(set(some_nouns))
+	#list(dict.fromkeys(some_nouns)) #erase duplicates
 	random.shuffle(some_nouns) #shuffle für Rätselwörter
 	docxprint.docx_print(printText=Aufgabe["Rätselwörter"], Bold=True, Doc=doc)
 	print(some_nouns)
@@ -91,10 +78,11 @@ def clozeTest(inputtext, langspinner):
 		docxprint.docx_print(printText=shuffled + ' ______________________________', Doc=doc)
 
 	#export some nouns for word search
+	print(type(some_nouns[0]))
 	for word in some_nouns:
-		export_some_nouns.append(str(word))
-
-	print('done and saving to:', save_path)
+		export_some_nouns.append(str(word).upper())
+		if len(export_some_nouns) == 15:
+			break
 	doc.save(save_path)
 
 
