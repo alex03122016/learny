@@ -26,7 +26,7 @@ def cloze_test(inputtext, language):
 	doc = docx.Document()# initializing python-docx
 	save_path = docxprint.docx_print(Doc= doc, save= 'clozeTest')
 
-	print('-------------------make gloze test----------------------')
+	print('-------------------make cloze test----------------------')
 
 	skip = False # it has to be hereque!nearly went crazy to figure it out
 
@@ -63,27 +63,6 @@ def cloze_test(inputtext, language):
 	for word in some_nouns:
 		docxprint.docx_print(printText=str(word) + ', ', Paragraph=paragraph, Doc=doc)
 
-	some_nouns = list(set(some_nouns))
-	#list(dict.fromkeys(some_nouns)) #erase duplicates
-	random.shuffle(some_nouns) #shuffle für Rätselwörter
-	docxprint.docx_print(printText=Aufgabe["Rätselwörter"], Bold=True, Doc=doc)
-	print(some_nouns)
-	for word in some_nouns:
-		if word == some_nouns[-1]:
-			break
-		word = str(word)
-		shuffled = list(word)
-		random.shuffle(shuffled)
-		shuffled = ''.join(shuffled)
-		docxprint.docx_print(printText=shuffled + ' ______________________________', Doc=doc)
 
-	#export some nouns for word search
-	print(type(some_nouns[0]))
-	for word in some_nouns:
-		export_some_nouns.append(str(word).upper())
-		if len(export_some_nouns) == 15:
-			break
 	doc.save(save_path)
-
-
 	return export_some_nouns

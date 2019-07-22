@@ -34,7 +34,7 @@ def docx_print(printText="",
     paragraph = Paragraph
 
   if NewTable == True:
-    print("newTable")
+
     table = doc.add_table(TableROWS ,TableCOLS)
     table.style = 'Table Grid'
   if Table != None:
@@ -69,17 +69,20 @@ def print_present_or_past(looked_up_verbs_list, found_verbs_list):
 	#looked_up_verbs_list = []
 	mix_list = []
 
-	random.shuffle(looked_up_verbs_list)
 	for elements in looked_up_verbs_list:
 		for word in elements:
 			if len(mix_list) == 26:
 				break
 			if word not in mix_list:
 				mix_list.append(word)
-
+	mix_list = list(set(mix_list))
+	print('present or past mied list: ', mix_list )
 
 	#print everythin to .docx file
 	doc = docx.Document()
+
+	save_path = docx_print(Doc= doc, save= 'presentorpast')
+
 	paragraph = doc.add_paragraph()
 	run = paragraph.add_run('Aufgabe: Hier siehst du Verben aus dem Text.\n \n  Ordne Sie richtig zu! \n Sind sie im Präsens oder im Präteritum?')
 	font = run.font
@@ -89,11 +92,15 @@ def print_present_or_past(looked_up_verbs_list, found_verbs_list):
 	paragraph = doc.add_paragraph('')
 	random.shuffle(mix_list)
 	for word in mix_list:
+		if word == mix_list[-1]:
+			run = paragraph.add_run(word + ' ')
+			font = run.font
+			font.size = Pt(18)
+			break
 		run = paragraph.add_run(word + ', ')
 		font = run.font
 		font.size = Pt(18)
-		if word == mix_list[-1]:
-			run = paragraph.add_run(word + ' ')
+
 
 	table = doc.add_table(13 +1 ,2)
 	table.style = 'Table Grid'
@@ -109,5 +116,7 @@ def print_present_or_past(looked_up_verbs_list, found_verbs_list):
 	cell.text = 'Präteritum'
 	#
 	#save the result
-	doc.save(os.path.join(os.path.expanduser('~'), 'python-project', "kivy-test", "learny", __name__ +"fileTitle.docx"))
+	#doc.save(os.path.join(os.path.expanduser('~'), 'python-project', "kivy-test", "learny", "presentorpast" +"fileTitle.docx"))
+	doc.save(save_path)
+
 	return
