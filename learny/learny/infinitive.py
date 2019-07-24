@@ -7,15 +7,12 @@ def infinitive(inputtext, language):
 	from docx.shared import RGBColor
 	from docx.shared import Pt
 	import os
+	import random
 	import spacy
-	#from spacy.lang.de.examples import sentences
 	from learny import docxprint, languageload
-	#from flask import request
-	#welcome message
-	print('-------------------GENERATE infinit form of verbs docx has to be in a table-----------aim: ')
+	print('-------------------GENERATE infinit form of verbs: ')
 
-	# create document object
-	doc = docx.Document()
+
 
 	# variables and lists used
 	i = 0
@@ -25,30 +22,26 @@ def infinitive(inputtext, language):
 	infinit_verb_list = []
 	textverb = []
 	keptinfinitive = []
+	non_infinit_verbs = []
+	new_infinit_verbs = []
 	Aufgabe = {
 		"Kopfzeile": "Name: 				Klasse: 				Datum:  \n ",
 		"Titel": "",
-		"1. Aufgabe": "Aufgabe: Hier sind die Grundformen von Verben aus dem Text.\n Unterstreiche die gebeugte Form aus dem Text.\n",
-		"Hinweise": "Hier sind die Wörter aus dem Text: \n Markiere die Wörter blau, die gleich geblieben sind. \n",
+		"1. Aufgabe": "Aufgabe: Hier siehst du gebeugte Verben und Verben in der Grundform. Ordne sie einander zu!\n",
+		"Hinweise": "Hier sind die Wörter aus dem Text: \n ",
 		"Rätselwörter": "Hier ein paar Rätselwörter aus dem Text: \n",
 	}
+	# create document object
+	doc = docx.Document()
 	nlp = languageload.language_load(language)
 	docnlp = nlp(inputtext) #load to spacy
 	#nlp = spacy.load(request.form['language_options'])
 	doc = docx.Document()# initializing python-docx
 	save_path = docxprint.docx_print(Doc= doc, save= 'infinitive')
 
-	#rawText = request.form['text']
-
-	#docnlp = nlp(rawText)
 	print(docnlp.text)
 	paragraph = doc.add_paragraph()
 	paragraph.text = ''
-	#for token in docnlp:
-	#	print(token.text, token.pos_, token.dep_)
-	#print([t.lemma_ for t in doc])               # Lemmata der einzelnen Tokens
-		#print(doc[1].lemma_)
-		#print(t)
 	for token in docnlp:
 		if 'AUX' in token.pos_:
 			print(token.lemma_)
@@ -72,21 +65,24 @@ def infinitive(inputtext, language):
 	doc.add_page_break()
 	#paragraph = doc.add_paragraph()
 	docxprint.docx_print(printText=Aufgabe["1. Aufgabe"], Bold=True, Doc=doc)
-	docxprint.docx_print(printText=Aufgabe["Hinweise"], Doc=doc)
 	paragraph = doc.add_paragraph('')
 	#random.shuffle(mix_list)
 	for word in textverb:
-		if word == textverb[-1]:
-			docxprint.docx_print(printText=word + ' ', Paragraph=paragraph, Doc=doc)
-			break
-		docxprint.docx_print(printText=word + ', ', Paragraph=paragraph, Doc=doc)
+		if word not in infinit_verb_list:
+			non_infinit_verbs.append(word)
+			if word == textverb[-1]:
+				docxprint.docx_print(printText=word + ' ', Paragraph=paragraph, Doc=doc)
+				break
+			docxprint.docx_print(printText=word + ', ', Paragraph=paragraph, Doc=doc)
 
 
 	print("keptinfinitive:", keptinfinitive )
-	#random.shuffle(verb_list)
 	paragraph = doc.add_paragraph()
-	for word in infinit_verb_list:
-		docxprint.docx_print(printText=word + '_'*31+"\n", Paragraph=paragraph, Doc=doc)
+	random.shuffle(non_infinit_verbs)
+	docnlp = nlp(" ".join(non_infinit_verbs)) #load to spacy
+	for token in docnlp:
+		docxprint.docx_print(printText=token.lemma_ + '_'*31+"\n", Paragraph=paragraph, Doc=doc)
+
 	print('done')
 	doc.save(save_path)
 	return
