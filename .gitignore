@@ -11,9 +11,3 @@ plyer.pdf
 /learny/learny/dictdata
 *.pyc
 *~
-
-/learny/microblog/dictdata
-/learny/microblog/dictdata.lock
-/learny/microblog/*.docx
-/learny/microblog/*.docx#
-/learny/microblog/geckodriver.log
