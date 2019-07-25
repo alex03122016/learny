@@ -12,8 +12,6 @@ plyer.pdf
 *.pyc
 *~
 
-__pycache__
-venv
 /learny/microblog/dictdata
 /learny/microblog/dictdata.lock
 /learny/microblog/*.docx
