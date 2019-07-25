@@ -9,3 +9,13 @@ plyer.pdf
 /learny/dictdata
 /learny/dictdatakivy
 /learny/learny/dictdata
+*.pyc
+*~
+
+__pycache__
+venv
+/learny/microblog/dictdata
+/learny/microblog/dictdata.lock
+/learny/microblog/*.docx
+/learny/microblog/*.docx#
+/learny/microblog/geckodriver.log
