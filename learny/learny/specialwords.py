@@ -1,4 +1,5 @@
 #! python3
+# -*- coding: utf-8 -*-
 try:
 	import languageload
 except ImportError:

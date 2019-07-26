@@ -1,3 +1,5 @@
+#!python3
+# -*- coding: utf-8 -*-
 def wordsearch(words):
   import docx
   import os

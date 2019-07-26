@@ -1,4 +1,5 @@
 #! python3
+# -*- coding: utf-8 -*-
 import docx 	#python-docx module
 from docx.shared import RGBColor
 from docx.shared import Pt

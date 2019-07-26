@@ -1,5 +1,5 @@
 #! python3
-#
+# -*- coding: utf-8 -*-
 #cloze test maker: this program searches a given text for nouns and substitutes them with ' _'
 #
 def cloze_test(inputtext, language):
