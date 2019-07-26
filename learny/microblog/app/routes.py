@@ -3,7 +3,7 @@ from app import app
 import os
 import sys
 from flask import send_file
-sys.path.insert(1, '/home/alex/python-project/kivy-test/learny')
+sys.path.insert(1, os.path.join(os.path.expanduser('~'), 'learny')
 from learny import learny
 
 @app.route('/')
