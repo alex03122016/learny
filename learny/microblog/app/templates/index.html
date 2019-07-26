@@ -1,0 +1,26 @@
+{% extends "header.html" %}
+{% block content %}
+    <body>
+        <h1 align="center">LearnY - Üben lohnt sich!</h1>
+	<div align="center"> Geben Sie hier den Text ein. </div>
+	<div align="center">
+		<form method="POST">
+		    <textarea name="text" cols="60" rows="10"> ...</textarea>
+			<p>
+            <hr>
+				<input type="radio" name="language_options" id="Sprache: Deutsch" value="Sprache: Deutsch" checked="checked"> deutsch </input>
+				<input type="radio" name="language_options" id="Sprache: Englisch" value="Sprache: Englisch"> englisch </input>
+            <br>
+            <hr>
+            </p>
+
+
+			<p><input class="button" type=submit value=enviar!>
+
+			</p>
+
+		</form>
+	</div>
+
+    </body>
+{% endblock %}
