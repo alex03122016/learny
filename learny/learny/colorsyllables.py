@@ -1,4 +1,5 @@
 #! python3
+# -*- coding: utf-8 -*-
 # aim: help students learning to read by coloring red every second syllable
 # idea was seen in non free educational program milbenberger silbengenerator
 # what the program does:
