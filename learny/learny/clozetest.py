@@ -7,7 +7,10 @@ def cloze_test(inputtext, language):
 	import os
 	import spacy #code: pip install spacy
 	import docx 	#python-docx module
-	from learny import docxprint, languageload
+	try:
+		import docxprint, languageload
+	except ImportError:
+		from learny import docxprint, languageload
 
 	# variables and lists used
 	i = 0

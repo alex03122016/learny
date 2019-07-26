@@ -1,5 +1,8 @@
 #! python3
-from learny import languageload
+try:
+	import languageload
+except ImportError:
+	from learny import languageload
 
 
 def nouns(inputtext, language):

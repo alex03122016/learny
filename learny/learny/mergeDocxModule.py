@@ -17,6 +17,6 @@ def combine_word_documents(files):
         for element in sub_doc.element.body:
             merged_document.element.body.append(element)
 
-    merged_document.save(os.path.join(os.path.expanduser('~'), 'python-project', "kivy-test", "learny", "merged.docx"))
+    merged_document.save(os.path.join(os.path.expanduser('~'), "learny", "learny", "merged.docx"))
     return
 #combine_word_documents(files)

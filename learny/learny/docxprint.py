@@ -19,7 +19,7 @@ def docx_print(printText="",
 				save='' ):
   doc = Doc
   if save != '':
-      save_path = os.path.join(os.path.expanduser('~'),'python-project' ,'kivy-test', 'learny', save + 'fileTitle.docx')
+      save_path = os.path.join(os.path.expanduser('~'),'learny', 'learny', save + 'fileTitle.docx')
       print("save")
       return save_path
   if pageBreak == True:

@@ -9,7 +9,10 @@ def infinitive(inputtext, language):
 	import os
 	import random
 	import spacy
-	from learny import docxprint, languageload
+	try:
+		import docxprint, languageload
+	except ImportError:
+		from learny import docxprint, languageload
 	print('-------------------GENERATE infinit form of verbs: ')
 
 

@@ -35,7 +35,10 @@ def present_or_past(inputtext, language):
 	import subprocess
 	import spacy
 	#from spacy.lang.de.examples import sentences
-	from learny import docxprint, languageload
+	try:
+		import docxprint, languageload
+	except ImportError:
+		from learny import docxprint, languageload
 
 
 	print('Starting Program: Present or Past'+ "\n"*5)

@@ -10,7 +10,10 @@
 def color_syllables(inputtext):
 	import subprocess
 	import os
-	from learny import docxprint
+	try:
+		import docxprint
+	except ImportError:
+		from learny import docxprint
 	#python-docx module code: pip install python-docx
 	import docx
 	from docx.shared import RGBColor

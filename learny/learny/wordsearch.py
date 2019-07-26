@@ -4,7 +4,10 @@ def wordsearch(words):
 
  #Python Wordsearch Generator - www.101computing.net/python-wordsearch-generator/
   import random
-  from learny import docxprint
+  try:
+      import docxprint
+  except ImportError:
+      from learny import docxprint
   doc = docx.Document()
   save_path = docxprint.docx_print(Doc= doc, save= 'wordsearch')
   Aufgabe = {

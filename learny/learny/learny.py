@@ -1,6 +1,9 @@
 
+try:
+	import colorsyllables, clozetest, wordsearch, mergeDocxModule, PresentOrPast, specialwords, wordshuffle, infinitive
+except ImportError:
+	from . import colorsyllables, clozetest, wordsearch, mergeDocxModule, PresentOrPast, specialwords, wordshuffle, infinitive
 
-from . import colorsyllables, clozetest, wordsearch, mergeDocxModule, PresentOrPast, specialwords, wordshuffle, infinitive
 import os
 def learny(inputtext, language):
 
@@ -13,9 +16,9 @@ def learny(inputtext, language):
 	PresentOrPast.present_or_past(inputtext, language)
 	#wordshuffle.word_shuffle(some_nouns)
 	infinitive.infinitive(inputtext, language)
-	files = [os.path.join(os.path.expanduser('~'), 'python-project', "kivy-test", "learny", 'wordsearch'+"fileTitle.docx"),
-	    os.path.join(os.path.expanduser('~'), 'python-project', "kivy-test", "learny", 'clozeTest'+"fileTitle.docx"),
-	    os.path.join(os.path.expanduser('~'), 'python-project', "kivy-test", "learny", 'presentorpast'+"fileTitle.docx")]
+	files = [os.path.join(os.path.expanduser('~'), "learny", "learny", 'wordsearch'+"fileTitle.docx"),
+	    os.path.join(os.path.expanduser('~'), "learny", "learny", 'clozeTest'+"fileTitle.docx"),
+	    os.path.join(os.path.expanduser('~'), "learny", "learny", 'presentorpast'+"fileTitle.docx")]
 
 	mergeDocxModule.combine_word_documents(files)
 
