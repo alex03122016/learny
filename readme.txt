@@ -8,6 +8,11 @@ kivy tutorial
     -  https://pythonprogramming.net/kivy-widgets-labels/?completed=/kivy-application-development-tutorial/
     -  https://techwithtim.net/tutorials/kivy-tutorial/object-properties/ #the best one!
 
+
+  -----------------------------------------------------------------------
+	install kivy instructions:
+	https://kivy.org/doc/stable/installation/installation-linux.html
+
   create a pakage for android:
   -----------------------------------------------
 

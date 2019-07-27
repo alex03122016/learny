@@ -12,9 +12,9 @@ def learny(inputtext, language):
 	clozetest.cloze_test(inputtext, language)
 	some_nouns = clozetest.cloze_test(inputtext, language)
 	some_nouns = specialwords.nouns(inputtext, language)
-	#wordsearch.wordsearch(some_nouns)
+	wordsearch.wordsearch(some_nouns)
 	PresentOrPast.present_or_past(inputtext, language)
-	#wordshuffle.word_shuffle(some_nouns)
+	wordshuffle.word_shuffle(some_nouns)
 	infinitive.infinitive(inputtext, language)
 	files = [os.path.join(os.path.expanduser('~'), "learny", "learny", 'wordsearch'+"fileTitle.docx"),
 	    os.path.join(os.path.expanduser('~'), "learny", "learny", 'clozeTest'+"fileTitle.docx"),

@@ -1,6 +1,8 @@
 
 __pycache__
 venv
+venvkivy
+kivy_venv
 plyer.pdf
 *.docx
 *.docx#
