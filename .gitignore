@@ -3,6 +3,7 @@ __pycache__
 venv
 venvkivy
 kivy_venv
+flask_venv
 plyer.pdf
 *.docx
 *.docx#
