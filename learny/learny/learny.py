@@ -18,6 +18,8 @@ def learny(inputtext, language):
 	infinitive.infinitive(inputtext, language)
 	files = [os.path.join(os.path.expanduser('~'), "learny", "learny", 'wordsearch'+"fileTitle.docx"),
 	    os.path.join(os.path.expanduser('~'), "learny", "learny", 'clozeTest'+"fileTitle.docx"),
+		os.path.join(os.path.expanduser('~'), "learny", "learny", 'infinitive'+"fileTitle.docx"),
+		os.path.join(os.path.expanduser('~'), "learny", "learny", 'wordshuffle'+"fileTitle.docx"),
 	    os.path.join(os.path.expanduser('~'), "learny", "learny", 'presentorpast'+"fileTitle.docx")]
 
 	mergeDocxModule.combine_word_documents(files)
