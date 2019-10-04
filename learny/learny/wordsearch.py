@@ -71,8 +71,9 @@ def wordsearch(words):
       #Decide horizontal step (hs) and vertical step (vs)
 
       if len(word)>ROWS or len(word)>COLS:
-        print("Some of your words are too long for this grid. Remove long words or resize your grid.")
-        exit()
+        print("Some of your words are too long for this grid. Remove long words or resize your grid. Skipping wordsearch.")
+        #exit()
+        break
 
       if direction==0: #Horizontal Left to Right
         row=random.randint(0,ROWS - 1)
