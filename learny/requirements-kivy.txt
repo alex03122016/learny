@@ -10,7 +10,7 @@ Kivy==1.11.1
 Kivy-Garden==0.1.4
 lxml==4.4.0
 murmurhash==1.0.2
-nltk==3.4.4
+nltk==3.4.5
 numpy==1.17.0
 plac==0.9.6
 preshed==2.0.1
