@@ -19,6 +19,9 @@ $ cd learny
 $ cd microblog
 $ flask run –host=0.0.0.0
 
+for pyhyphen maybe needs to be installed on ubuntu 20.04
+sudo apt-get install build-essential python-dev
+
 Usage
 -------------------------------------------------------------------------------
 

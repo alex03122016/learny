@@ -5,6 +5,7 @@ import sys
 from flask import send_file
 sys.path.insert(1, os.path.join(os.path.expanduser('~'), 'learny', 'learny'))
 from learny import learny
+
 #import learny
 @app.route('/')
 @app.route('/index')
@@ -30,6 +31,6 @@ def my_form_post():
 @app.route('/return-merged/')
 def return_merged():
 	try:
-		return send_file(os.path.join(os.path.expanduser('~'), 'learny', 'learny', 'merged.docx'), attachment_filename='merged.docx', as_attachment=True)
+		return send_file(os.path.join(os.path.expanduser('~'), 'merged.docx'), attachment_filename='merged.docx', as_attachment=True)
 	except Exception as e:
 		return str(e)
